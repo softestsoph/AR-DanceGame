@@ -7,10 +7,25 @@ using UnityEngine;
 namespace PoseTeacher {
     public class ScoreDisplay : MonoBehaviour
     {
+        public static ScoreDisplay instance;
+
         public TextMeshPro text2;
         private TextMeshPro textMesh;
         private Animation animation;
         private AudioSource audioData;
+
+        private void Awake()
+        {
+            // make singleton
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(this);
+            }
+        }
 
         // Start is called before the first frame update
         void Start()
