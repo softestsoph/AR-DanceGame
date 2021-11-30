@@ -27,6 +27,7 @@ public class SongMenu : MonoBehaviour
             SongDisplay.SetActive(true);
             selectedID = songID;
             SongName.text = dance.songTitle;
+            HighScore.text = HighScoreData.Instance.GetHighScore(songID).ToString();
         }
        
     }

@@ -120,16 +120,16 @@ namespace PoseTeacher
         {
             finished = true;
             audioSource.Stop();
-            float totalScore = ScoringManager.Instance.getFinalScores().Item1;
+            int totalScore = ScoringManager.Instance.getFinalScores().Item1;
             List<Scores> finalScores = ScoringManager.Instance.getFinalScores().Item2;
 
-            Debug.Log(finalScores);
-            //TODO: Add final score screen
             endScoreScreen.setValues(totalScore,
                 finalScores.Where(element => element == Scores.GREAT).Count(),
                 finalScores.Where(element => element == Scores.GOOD).Count(),
-                finalScores.Where(element => element == Scores.BAD).Count());
+                finalScores.Where(element => element == Scores.BAD).Count(),
+                totalScore > HighScoreData.Instance.GetHighScore(DancePerformanceObject.songId));
             endScoreScreen.gameObject.SetActive(true);
+            HighScoreData.Instance.UpdateHighScore(DancePerformanceObject.songId, totalScore);
         }
 
         void Setup()
