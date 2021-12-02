@@ -7,7 +7,6 @@ public class PersistentData : MonoBehaviour
     public static PersistentData Instance;
 
     public DancePerformanceScriptableObject performance;
-    public float currentHighScore;
 
     public void Awake()
     {

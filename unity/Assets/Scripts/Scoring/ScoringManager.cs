@@ -184,10 +184,10 @@ namespace PoseTeacher
             return DTW[goals.Count, playerPoses.Count] / playerPoses.Count;
         }
 
-        public (float, List<Scores>) getFinalScores()
+        public (int, List<Scores>) getFinalScores()
         {
             if (currentlyScoring) finishGoal();
-            return (totalScore, scores);
+            return (Mathf.RoundToInt(totalScore*1000), scores);
         }
 
         void finishGoal()
