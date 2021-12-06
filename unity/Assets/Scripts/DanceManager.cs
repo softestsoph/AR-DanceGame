@@ -130,7 +130,7 @@ namespace PoseTeacher
                 totalScore > HighScoreData.Instance.GetHighScore(DancePerformanceObject.songId));
             endScoreScreen.gameObject.SetActive(true);
             HighScoreData.Instance.UpdateHighScore(DancePerformanceObject.songId, totalScore);
-        }
+        } 
 
         void Setup()
         {

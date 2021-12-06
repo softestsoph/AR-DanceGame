@@ -33,8 +33,12 @@ namespace PoseTeacher
 
         public GameObject VideoCube { set { if (value != null) videoRenderer = value.GetComponent<MeshRenderer>(); } }
 
-        public KinectPoseGetter()
+        private bool filteredInputs = false;
+        TobitKalmanKinect tobitKalman = new TobitKalmanKinect();
+
+        public KinectPoseGetter(bool _filteredInput = false)
         {
+            filteredInputs = _filteredInput;
             StartAzureKinect();
         }
 
@@ -92,6 +96,11 @@ namespace PoseTeacher
                             AppendRecordedFrame(jdl);
                         }
                         CurrentPose = live_data;
+
+                        if (filteredInputs)
+                        {
+                            tobitKalman.update(CurrentPose);
+                        }
                     }
                 }
             }
