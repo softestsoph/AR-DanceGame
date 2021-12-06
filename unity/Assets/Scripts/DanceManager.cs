@@ -49,9 +49,16 @@ namespace PoseTeacher
             {
                 Instance = this;
             }
+
+            /* For checking if calibration worked, testing only
+            GameObject calobjs = GameObject.Instantiate(Resources.Load<GameObject>("CalibrationObjects"));
+            calobjs.transform.Find("Player").transform.position = PersistentData.Instance.playerPosition;
+            calobjs.transform.Find("Kinect").transform.position = PersistentData.Instance.kinectPosition;
+            calobjs.transform.Find("Teacher").transform.position = PersistentData.Instance.teacherPositions[0];
+            */
         }
 
-            // Start is called before the first frame update
+        // Start is called before the first frame update
         public void Start()
         {
             Setup();
@@ -143,6 +150,9 @@ namespace PoseTeacher
             avatarListSelf.Add(new AvatarContainer(avatarContainerSelf));
             avatarListTeacher.Add(new AvatarContainer(avatarContainerTeacher));
 
+            avatarContainerTeacher.transform.position = PersistentData.Instance.teacherPositions[0];
+            avatarContainerTeacher.transform.LookAt(PersistentData.Instance.playerPosition);
+            avatarContainerTeacher.transform.Rotate(new Vector3(0, 180, 0));
 
             audioSource = GetComponent<AudioSource>();
             song = DancePerformanceObject.SongObject.SongClip;
