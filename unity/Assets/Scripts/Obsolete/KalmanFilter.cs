@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PoseTeacher
+namespace PoseTeacherOld
 {
     public class KalmanFilter
     {
