@@ -23,6 +23,7 @@ namespace PoseTeacher
         public InputSource selfPoseInputSource = InputSource.KINECT;
 
         public bool paused = false;
+        public bool saveDanceData = false;
 
         public PoseData currentSelfPose;
 
@@ -66,9 +67,12 @@ namespace PoseTeacher
                 goals.Add((DancePerformanceObject.goalStartTimestamps[i], DancePerformanceObject.goals[i]));
             }
 
+            Debug.Log("Getting the Input device.");
             selfPoseInputGetter = getPoseGetter(selfPoseInputSource);
+            Debug.Log("Created pose input getter: " + selfPoseInputGetter);
             
             audioSource.Play();
+            Debug.Log("Successfull start initialization.");
         }
 
         // Update is called once per frame
@@ -83,6 +87,11 @@ namespace PoseTeacher
                 goals.RemoveAt(0);
             }
             AnimateTeacher(danceData.GetInterpolatedPose(currentId, out currentId, timeOffset).toPoseData());
+
+            if (saveDanceData)
+            {
+                selfPoseInputGetter.SaveDanceData();
+            }
 
             if (audioSource.time > danceData.poses[danceData.poses.Count - 1].timestamp)
             {
@@ -117,15 +126,34 @@ namespace PoseTeacher
         }
 
         PoseGetter getPoseGetter(InputSource src) {
+            
+            PoseGetter poseGetter;
+
             switch (src)
             {
+
                 case InputSource.KINECT:
-                    return new KinectPoseGetter() { VideoCube = videoCube};
+                    poseGetter = new KinectPoseGetter() { VideoCube = videoCube};
+                    break;
                 case InputSource.FILE:
-                    return new FilePoseGetter(true) { ReadDataPath = fake_file };
+                    poseGetter = new FilePoseGetter(true) { ReadDataPath = fake_file };
+                    break;
                 default:
-                    return new FilePoseGetter(true) { ReadDataPath = fake_file };
+                    poseGetter = new FilePoseGetter(true) { ReadDataPath = fake_file };
+                    break;
             }
+            
+            if(poseGetter != null)
+            {
+                Debug.Log("created posegetter: " + poseGetter);
+                return poseGetter;
+            }
+            else
+            {
+                Debug.Log("Could not create posegetter.");
+                return null;
+            }
+
         }
     }
 }

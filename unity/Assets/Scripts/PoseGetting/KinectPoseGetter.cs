@@ -16,7 +16,15 @@ namespace PoseTeacher
                 return recording;
             }
             set {
-                if (value) StartRecording();
+                if (value)
+                {
+                    StartRecording();
+                    RecordingStartTicks = DateTime.Now.Ticks;
+                }
+                else
+                {
+                    LastTimeStamp = CurrentTimeStamp;
+                }
                 recording = value;
             }
         }
@@ -42,6 +50,8 @@ namespace PoseTeacher
         {
             if (device != null)
             {
+                //Debug.Log("device: " + device.GetCapture(new System.TimeSpan(0, 0, 1)));
+
                 using (Capture capture = device.GetCapture())
                 {
                     // Make tracker estimate body
@@ -95,12 +105,86 @@ namespace PoseTeacher
                     }
                 }
             }
+
             else
             {
                 Debug.Log("device is null!");
             }
+
             return CurrentPose;
+
         }
+
+
+        public override DancePose GetNextDancePose()
+        {
+            if (device != null)
+            {
+                using (Capture capture = device.GetCapture())
+                {
+                    // Make tracker estimate body
+                    tracker.EnqueueCapture(capture);
+
+                    // Code for getting RGB image from camera
+                    Microsoft.Azure.Kinect.Sensor.Image color = capture.Color;
+                    if (color != null && color.WidthPixels > 0 && (streamCanvas != null || videoRenderer != null))
+                    {
+                        UnityEngine.Object.Destroy(tex);
+                        tex = new Texture2D(color.WidthPixels, color.HeightPixels, TextureFormat.BGRA32, false);
+                        tex.LoadRawTextureData(color.Memory.ToArray());
+                        tex.Apply();
+
+                        //Fetch the RawImage component from the GameObject
+                        if (tex != null)
+                        {
+                            if (streamCanvas != null)
+                            {
+                                streamCanvas.GetComponent<RawImage>().texture = tex;
+                            }
+                            if (videoRenderer != null)
+                            {
+                                videoRenderer.material.mainTexture = tex;
+                            }
+                        }
+                    }
+
+                }
+
+                // Get pose estimate from tracker
+                using (Frame frame = tracker.PopResult())
+                {
+                    //  At least one body found by Body Tracking
+                    if (frame.NumberOfBodies > 0)
+                    {
+                        // Use first estimated person, if mutiple are in the image
+                        // !!! There are (probably) no guarantees on consisitent ordering between estimates
+                        //var bodies = frame.Bodies;
+                        var body = frame.GetBody(0);
+                        TimeSpan ts = frame.DeviceTimestamp;
+
+                        // Apply pose to user avatar(s)
+                        CurrentTicks = ts.Ticks;
+                        DancePose live_data = DancePose.Body2DancePose(body, GetTimeStamp());
+
+                        if (Recording) // recording
+                        {
+                            recordedDanceData.poses.Add(live_data);
+                        }
+                        CurrentDancePose = live_data;
+                    }
+                }
+            }
+
+            else
+            {
+                Debug.Log("device is null!");
+            }
+
+            return CurrentDancePose;
+
+        }
+
+
         public override void Dispose()
         {
             if (tracker != null)
@@ -126,17 +210,24 @@ namespace PoseTeacher
                 WiredSyncMode = WiredSyncMode.Standalone,
             };
             device.StartCameras(config);
-            Debug.Log("Open K4A device successful. sn:" + device.SerialNum);
+            Debug.Log("Open K4A device successful. Serial Nr: " + device.SerialNum);
 
             //var calibration = device.GetCalibration(config.DepthMode, config.ColorResolution);
             var calibration = device.GetCalibration();
 
+            int GpuID = SystemInfo.graphicsDeviceID;
+            //Debug.Log("GPU ID: " + GpuID);
+
+            var trackerDefaultConfiguration = TrackerConfiguration.Default;
             var trackerConfiguration = new TrackerConfiguration
             {
-                ProcessingMode = TrackerProcessingMode.Gpu,
-                SensorOrientation = SensorOrientation.Default
+                ProcessingMode = TrackerProcessingMode.Cuda,  // Set to Cpu if it doesn't run 
+                SensorOrientation = SensorOrientation.Default,
+                //GpuDeviceId = GpuID
             };
 
+
+            Debug.Log("Creatting the Tracker");
             this.tracker = Tracker.Create(calibration, trackerConfiguration);
             Debug.Log("Body tracker created.");
         }
@@ -154,11 +245,21 @@ namespace PoseTeacher
             File.WriteAllText(WriteDataPath, "");
             Debug.Log("Reset recording file");
         }
-
+        
         void StartRecording()
         {
             string timestamp = DateTime.Now.ToString("yyyy_MM_dd-HH_mm_ss");
             WriteDataPath = "jsondata/" + timestamp + ".txt";
+        }
+
+        public override void SaveDanceData()
+        {
+            string timestamp = DateTime.Now.ToString("yyyy_MM_dd-HH_mm_ss");
+            string recordingName = "Recordings/Kinect/recording-" + timestamp;
+            DanceDataScriptableObject.SaveDanceDataToScriptableObject(recordedDanceData, recordingName, true);
+
+            // After Saving reset recorded data to have space for a new one
+            recordedDanceData = new DanceData();
         }
 
     }
