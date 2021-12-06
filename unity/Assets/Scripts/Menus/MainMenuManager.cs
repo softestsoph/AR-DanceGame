@@ -25,4 +25,9 @@ public class MainMenuManager : MonoBehaviour
         MainMenu?.SetActive(true);
         DanceSelectionMenu?.SetActive(false);
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
