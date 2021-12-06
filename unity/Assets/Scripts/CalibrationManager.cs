@@ -13,5 +13,6 @@ public class CalibrationManager : MonoBehaviour
         PersistentData.Instance.playerPosition = playerPosition.transform.position;
         PersistentData.Instance.kinectPosition = kinectPosition.transform.position;
         PersistentData.Instance.teacherPositions = teacherPositions.Select(x => x.transform.position).ToList();
+        PersistentData.Instance.calibrated = true;
     }
 }

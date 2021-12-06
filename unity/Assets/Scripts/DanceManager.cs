@@ -150,9 +150,16 @@ namespace PoseTeacher
             avatarListSelf.Add(new AvatarContainer(avatarContainerSelf));
             avatarListTeacher.Add(new AvatarContainer(avatarContainerTeacher));
 
-            avatarContainerTeacher.transform.position = PersistentData.Instance.teacherPositions[0];
-            avatarContainerTeacher.transform.LookAt(PersistentData.Instance.playerPosition);
-            avatarContainerTeacher.transform.Rotate(new Vector3(0, 180, 0));
+            if (PersistentData.Instance.calibrated)
+            {
+                avatarContainerTeacher.transform.position = PersistentData.Instance.teacherPositions[0];
+                avatarContainerTeacher.transform.LookAt(PersistentData.Instance.playerPosition);
+                avatarContainerTeacher.transform.Rotate(new Vector3(-avatarContainerTeacher.transform.rotation.eulerAngles.x, 180, -avatarContainerTeacher.transform.rotation.eulerAngles.z));
+
+                videoCube.transform.position = PersistentData.Instance.kinectPosition + Vector3.up;
+                videoCube.transform.LookAt(PersistentData.Instance.playerPosition);
+                videoCube.transform.Rotate(new Vector3(-videoCube.transform.rotation.eulerAngles.x, 180, -videoCube.transform.rotation.eulerAngles.z));
+            }
 
             audioSource = GetComponent<AudioSource>();
             song = DancePerformanceObject.SongObject.SongClip;

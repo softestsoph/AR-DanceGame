@@ -8,9 +8,10 @@ public class PersistentData : MonoBehaviour
 
     public DancePerformanceScriptableObject performance;
 
-    public Vector3 playerPosition = Vector3.zero;
-    public Vector3 kinectPosition = Vector3.zero;
-    public List<Vector3> teacherPositions = new List<Vector3>();
+    public Vector3 playerPosition;
+    public Vector3 kinectPosition;
+    public List<Vector3> teacherPositions;
+    public bool calibrated = false;
 
     public void Awake()
     {
@@ -23,6 +24,5 @@ public class PersistentData : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        teacherPositions.Add(Vector3.zero);
     }
 }
