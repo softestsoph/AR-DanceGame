@@ -8,6 +8,11 @@ public class PersistentData : MonoBehaviour
 
     public DancePerformanceScriptableObject performance;
 
+    public Vector3 playerPosition;
+    public Vector3 kinectPosition;
+    public List<Vector3> teacherPositions;
+    public bool calibrated = false;
+
     public void Awake()
     {
         if (Instance != null)
