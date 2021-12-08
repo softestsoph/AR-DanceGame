@@ -8,6 +8,7 @@ namespace PoseTeacher
     public enum InputSource { KINECT, FILE }
     public abstract class PoseGetter
     {
+        public abstract bool Recording { get; set; }
         public float LastTimeStamp = 0;
         public float CurrentTimeStamp;
         public long RecordingStartTicks;

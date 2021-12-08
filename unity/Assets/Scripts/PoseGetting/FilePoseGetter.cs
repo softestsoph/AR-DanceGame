@@ -10,7 +10,7 @@ namespace PoseTeacher
     {
 
         private bool recording;
-        public bool Recording
+        public override bool Recording
         {
             get
             {
@@ -110,7 +110,7 @@ namespace PoseTeacher
         public override void SaveDanceData()
         {
             string timestamp = DateTime.Now.ToString("yyyy_MM_dd-HH_mm_ss");
-            string recordingName = "Recordings/Files/recording-" + timestamp;
+            string recordingName = "Recordings/recording-" + timestamp;
             DanceDataScriptableObject.SaveDanceDataToScriptableObject(recordedDanceData, recordingName, true);
 
             // After Saving reset recorded data to have space for a new one

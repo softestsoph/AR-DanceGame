@@ -1,15 +1,16 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.UI;
 
 namespace PoseTeacher
 {
 
-    public class DanceManager : MonoBehaviour
+    public class RecordingScene : MonoBehaviour
     {
-        public static DanceManager Instance;
+        public static RecordingScene Instance;
 
         PoseGetter selfPoseInputGetter;
 
@@ -24,13 +25,17 @@ namespace PoseTeacher
 
         public bool paused = false;
 
+        public bool recording = false;
+        public PressableButtonHoloLens2 recordButton;
+        public PressableButtonHoloLens2 saveButton;
+
         public PoseData currentSelfPose;
 
         private DanceData danceData;
         private AudioClip song;
         private AudioSource audioSource;
 
-        readonly List<(float, DanceData)> goals = new List<(float,DanceData)>();
+        readonly List<(float, DanceData)> goals = new List<(float, DanceData)>();
 
         public float songTime => audioSource?.time ?? 0;
 
@@ -48,7 +53,7 @@ namespace PoseTeacher
             }
         }
 
-            // Start is called before the first frame update
+        // Start is called before the first frame update
         public void Start()
         {
             avatarListSelf = new List<AvatarContainer>();
@@ -61,14 +66,15 @@ namespace PoseTeacher
             audioSource.clip = song;
             danceData = DancePerformanceObject.danceData.LoadDanceDataFromScriptableObject();
 
-            for(int i = 0; i < DancePerformanceObject.goals.Count; i++)
+            for (int i = 0; i < DancePerformanceObject.goals.Count; i++)
             {
                 goals.Add((DancePerformanceObject.goalStartTimestamps[i], DancePerformanceObject.goals[i]));
             }
 
             selfPoseInputGetter = getPoseGetter(selfPoseInputSource);
-            
+
             audioSource.Play();
+
             Debug.Log("Successfull start initialization.");
         }
 
@@ -85,7 +91,7 @@ namespace PoseTeacher
             }
             AnimateTeacher(danceData.GetInterpolatedPose(currentId, out currentId, timeOffset).toPoseData());
 
-            
+
             if (audioSource.time > danceData.poses[danceData.poses.Count - 1].timestamp)
             {
                 audioSource.Stop();
@@ -98,7 +104,7 @@ namespace PoseTeacher
         public void OnApplicationQuit()
         {
             selfPoseInputGetter.Dispose();
-            
+
         }
 
         void AnimateSelf(PoseData live_data)
@@ -118,15 +124,16 @@ namespace PoseTeacher
             }
         }
 
-        PoseGetter getPoseGetter(InputSource src) {
-            
+        PoseGetter getPoseGetter(InputSource src)
+        {
+
             PoseGetter poseGetter;
 
             switch (src)
             {
 
                 case InputSource.KINECT:
-                    poseGetter = new KinectPoseGetter() { VideoCube = videoCube};
+                    poseGetter = new KinectPoseGetter() { VideoCube = videoCube };
                     break;
                 case InputSource.FILE:
                     poseGetter = new FilePoseGetter(true) { ReadDataPath = fake_file };
@@ -135,8 +142,8 @@ namespace PoseTeacher
                     poseGetter = new FilePoseGetter(true) { ReadDataPath = fake_file };
                     break;
             }
-            
-            if(poseGetter != null)
+
+            if (poseGetter != null)
             {
                 Debug.Log("created posegetter: " + poseGetter);
                 return poseGetter;
@@ -148,5 +155,32 @@ namespace PoseTeacher
             }
 
         }
+
+        public void ButtonSave()
+        {
+            Debug.Log("Saving current dance data. And stoping the recording.");
+            selfPoseInputGetter.SaveDanceData();
+            selfPoseInputGetter.Recording = false;
+            recordButton.GetComponent<Interactable>().IsToggled = false;
+        }
+
+        public void ButtonRecord()
+        {
+            Debug.Log("Recording Toggled.");
+            if (recordButton.GetComponent<Interactable>().IsToggled)
+            {
+                Debug.Log("Now: Recording.");
+                selfPoseInputGetter.Recording = true;
+            }
+            else
+            {
+                Debug.Log("Now: Stoped Recording.");
+                selfPoseInputGetter.Recording = false;
+            }
+        }
+
+
     }
+
+
 }
