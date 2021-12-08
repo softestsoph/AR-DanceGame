@@ -17,10 +17,11 @@ namespace PoseTeacher {
         public GameObject gameObject { get; }
     }
 
-    public interface IDancePoseSource {
-        public DancePose GetDancePose();
+    public interface IScoreDisplay {
+        public void showScore(Scores score);
 
-        public GameObject gameObject { get; }
+        public void addScore(int scoreToAdd);
+
+        public int Score { get; }
     }
-
 }
