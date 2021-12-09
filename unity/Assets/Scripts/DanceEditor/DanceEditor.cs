@@ -180,6 +180,8 @@ public class DanceEditor : MonoBehaviour {
             }
         }
 
+        DanceDataScriptableObject.SaveDanceDataToScriptableObject(activeData, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), true);
+
         activeData.SaveToJSON();
 
         Debug.Log("Saved all active Frames.");
