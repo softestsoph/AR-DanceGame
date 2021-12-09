@@ -171,7 +171,7 @@ public class DanceEditor : MonoBehaviour {
         float initialTs = 0;
         for (int i = 0; i < totalFrames; ++i)
         {
-            if (activeFrames.Contains(i))
+            if (activeFrames.Contains(i) || goalFrames.Contains(i))
             {
                 copyPose = danceData.poses[i];
                 copyPose.timestamp = initialTs;
@@ -183,6 +183,76 @@ public class DanceEditor : MonoBehaviour {
         activeData.SaveToJSON();
 
         Debug.Log("Saved all active Frames.");
+    }
+
+
+    public (List<float>, List<float>) SaveGoalFrames(float td = 0)
+    {
+        List<float> goalStartTimestamps = new List<float>();
+        List<float> goalDurations = new List<float>();
+
+        DancePose copyPose = new DancePose();
+
+        if (td == 0)
+        {
+            float stampSum = 0;
+            float lastTs = 0;
+            foreach (DancePose p in danceData.poses)
+            {
+                float currentTs = p.timestamp;
+                stampSum += (currentTs - lastTs);
+                lastTs = currentTs;
+            }
+            td = stampSum / totalFrames;
+        }
+
+        float initialTs = 0;
+        bool firstGoalFrame = true;
+        float goalDuration = 0;
+        for (int i = 0; i < totalFrames + 1; ++i)
+        {
+            if (activeFrames.Contains(i) || goalFrames.Contains(i))
+            {
+                copyPose.timestamp = initialTs;
+
+                if (goalFrames.Contains(i))
+                {
+                    if (firstGoalFrame)
+                    {
+                        goalStartTimestamps.Add(initialTs);
+                        firstGoalFrame = false;
+                    }
+                    else
+                    {
+                        goalDuration += td;
+                    }
+                }
+                else
+                {
+                    if(firstGoalFrame == false)
+                    {
+                        goalDurations.Add(goalDuration);
+                        firstGoalFrame = true;
+                    }
+                }
+
+                initialTs += td;
+
+            }
+
+            // check if a goal last until the very end
+            if(i == totalFrames)
+            {
+                if (firstGoalFrame == false)
+                {
+                    goalDurations.Add(goalDuration);
+                    firstGoalFrame = true;
+                }
+            }
+
+        }
+
+        return (goalStartTimestamps, goalDurations);
     }
 
     public (float, float) SliderMinMax()
