@@ -62,6 +62,8 @@ namespace PoseTeacher
             string jsonString = File.ReadAllText("jsondata/" + fileName);
             return JsonUtility.FromJson<DanceData>(jsonString);
         }
+
+
     }
 
     public enum DanceDifficulty
@@ -108,6 +110,43 @@ namespace PoseTeacher
             }
             return poseData;
         }
+
+        public static DancePose fromPoseData(PoseData poseData, float timeStamp = 0)
+        {
+            DancePose dancePose = new DancePose();
+            
+            for(int i = 0; i < (int)JointId.Count; ++i)
+            {
+                dancePose.positions[i] = poseData.data[i].Position;
+                dancePose.orientations[i] = poseData.data[i].Orientation;
+                dancePose.timestamp = timeStamp;
+            }
+
+            return dancePose;
+        }
+
+        public static DancePose Body2DancePose(Body body, float ts)
+        {
+            DancePose dancePose = new DancePose();
+            dancePose.timestamp = ts;
+            for (int i = 0; i < (int)JointId.Count; ++i)
+            {
+                // write recorded poses to file
+                Microsoft.Azure.Kinect.BodyTracking.Joint joint = body.Skeleton.GetJoint(i);
+                var pos = joint.Position;
+                var orientation = joint.Quaternion;
+                // save raw data
+                var v = new Vector3(pos.X, pos.Y, pos.Z);
+                var r = new Quaternion(orientation.X, orientation.Y, orientation.Z, orientation.W);
+
+                dancePose.positions[i] = v;
+                dancePose.orientations[i] = r;
+            }
+
+            return dancePose;
+        }
+
     }
+
 
 }
