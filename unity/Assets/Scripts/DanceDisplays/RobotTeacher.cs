@@ -24,11 +24,22 @@ namespace PoseTeacher
             // Remove mirroring before applying pose and readd it afterwards
             // Necesary because MoveRiggedAvatar function works in global coordinates
             Vector3 prevScale = gameObject.transform.localScale;
-            gameObject.transform.localScale = new Vector3(Mathf.Abs(prevScale.x), prevScale.y, prevScale.z);
+            Vector3 prevLoc = gameObject.transform.localPosition;
+            Quaternion prevRot = gameObject.transform.localRotation;
 
+            gameObject.transform.localScale = new Vector3(Mathf.Abs(prevScale.x), prevScale.y, prevScale.z);
+            gameObject.transform.localPosition = Vector3.zero;
+            gameObject.transform.localRotation = Quaternion.identity;
             RiggingUtils.MoveRiggedAvatar(animator, absoluteOffsetMap, joint_data_list, robot.transform, OffsetY, OffsetZ);
 
             gameObject.transform.localScale = prevScale;
+            gameObject.transform.localPosition = prevLoc;
+            gameObject.transform.localRotation = prevRot;
+        }
+
+        public void resetOffsetMap()
+        {
+            absoluteOffsetMap = RiggingUtils.CreateOffsetMap(animator, robot.transform);
         }
 
         public void SetActive(bool active)

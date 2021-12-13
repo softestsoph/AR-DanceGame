@@ -52,8 +52,8 @@ namespace PoseTeacher
                 Instance = this;
             }
 
-            /* For checking if calibration worked, testing only
-            GameObject calobjs = GameObject.Instantiate(Resources.Load<GameObject>("CalibrationObjects"));
+            // For checking if calibration worked, testing only
+           /* GameObject calobjs = GameObject.Instantiate(Resources.Load<GameObject>("CalibrationObjects"));
             calobjs.transform.Find("Player").transform.position = PersistentData.Instance.playerPosition;
             calobjs.transform.Find("Kinect").transform.position = PersistentData.Instance.kinectPosition;
             calobjs.transform.Find("Teacher").transform.position = PersistentData.Instance.teacherPositions[0];
@@ -160,13 +160,17 @@ namespace PoseTeacher
             */
 
             if (PersistentData.Instance.calibrated)
-            {   
+            {
+                defaultTeacher.gameObject.SetActive(false);
                 foreach(Vector3 position in PersistentData.Instance.teacherPositions)
                 {
                     GameObject newTeacher = Instantiate((GameObject) Resources.Load("Displays/HoloAvatarDisplay"));
                     newTeacher.transform.position = position;
                     newTeacher.transform.LookAt(PersistentData.Instance.playerPosition);
-                    newTeacher.transform.Rotate(new Vector3(-newTeacher.transform.rotation.eulerAngles.x, 180, -newTeacher.transform.rotation.eulerAngles.z));
+                    
+                    newTeacher.transform.Rotate(new Vector3(0, 180, 0));
+                    newTeacher.transform.eulerAngles = new Vector3(0, newTeacher.transform.eulerAngles.y, 0);
+                    newTeacher.GetComponent<RobotTeacher>().resetOffsetMap();
                     teacherDisplays.Add(newTeacher.GetComponent<AvatarDisplay>());
                 }
 
@@ -176,10 +180,11 @@ namespace PoseTeacher
                 avatarContainerTeacher.transform.Rotate(new Vector3(-avatarContainerTeacher.transform.rotation.eulerAngles.x, 180, -avatarContainerTeacher.transform.rotation.eulerAngles.z));
                 */
 
-                videoCube.transform.position = PersistentData.Instance.kinectPosition + Vector3.up;
+                videoCube.transform.position = PersistentData.Instance.kinectPosition + 0.5f * Vector3.up;
                 videoCube.transform.LookAt(PersistentData.Instance.playerPosition);
-                videoCube.transform.Rotate(new Vector3(-videoCube.transform.rotation.eulerAngles.x, 180, -videoCube.transform.rotation.eulerAngles.z));
-            } 
+                videoCube.transform.Rotate(new Vector3(0, 180, 0));
+                videoCube.transform.eulerAngles = new Vector3(0, videoCube.transform.eulerAngles.y, 0);
+            }
             else
             {
                 teacherDisplays.Add(defaultTeacher);

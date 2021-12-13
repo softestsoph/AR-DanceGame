@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avatarType: 2
-  material: {fileID: 0}
+  material: {fileID: 2100000, guid: 8eac362108f0d7d44bca94920813e177, type: 2}
 --- !u!114 &5251668033169120121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,9 +251,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   robot: {fileID: 6708447396913564726}
-  CharacterRootTransform: {fileID: 0}
   OffsetY: 0.5
-  OffsetZ: -3
+  OffsetZ: 2
 --- !u!1001 &6708447396913531522
 PrefabInstance:
   m_ObjectHideFlags: 0
