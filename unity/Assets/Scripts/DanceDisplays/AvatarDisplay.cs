@@ -5,15 +5,43 @@ using UnityEngine;
 namespace PoseTeacher {
     public class AvatarDisplay : MonoBehaviour, IAvatarDisplay {
         public AvatarType avatarType = AvatarType.ROBOT;
+        public Material material;
         private AvatarContainer avatarContainer;
+
+        private bool fadeOut = false;
+        private float alpha = 1f;
 
         private void Awake() {
             avatarContainer = new AvatarContainer(gameObject);
             avatarContainer.ChangeActiveType(avatarType);
+            material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 1f);
+        }
+
+        private void Update() {
+            if (fadeOut) {
+                // fade out within 2 seconds
+                alpha -= Time.deltaTime / 2f;
+
+                if (alpha < 0f) {
+                    fadeOut = false;
+                    alpha = 0f;
+                }
+
+                material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", alpha);
+            }
         }
 
         public void SetPose(PoseData pose) {
+            material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 1f);
             avatarContainer.MovePerson(pose);
+        }
+
+        public void FadeOut() {
+            fadeOut = true;
+        }
+
+        private void OnApplicationQuit() {
+            material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 1f);
         }
     }
 }

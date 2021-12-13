@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.VFX;
 
 namespace PoseTeacher {
-    public class GoalDisplay : MonoBehaviour, IGoalDisplay {
-        public VisualEffect vfx;
+    public class GoalGhostDisplay : MonoBehaviour, IGoalDisplay {
+        public Material material;
 
         private AvatarContainer avatarContainer;
         private float goalStartTime;
@@ -16,23 +16,22 @@ namespace PoseTeacher {
         void Start() {
             avatarContainer = new AvatarContainer(gameObject);
             avatarContainer.ChangeActiveType(AvatarType.ROBOT);
-            vfx.SetFloat("alpha", 0f);
-            showingList = false;
+            material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 0f);
         }
 
         void Update() {
             if (showingList) {
                 float currentTime = DanceManager.Instance.songTime;
 
-                if(currentTime > goalStartTime) {
-                    vfx.SetFloat("alpha", 1f);
+                if (currentTime > goalStartTime) {
+                    material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 1f);
                     float timeOffset = currentTime - (goalDanceData.poses[currentId].timestamp + goalStartTime);
                     avatarContainer.MovePerson(goalDanceData.GetInterpolatedPose(currentId, out currentId, timeOffset).toPoseData());
                 }
 
-                if(currentId == goalDanceData.poses.Count) {
+                if (currentId == goalDanceData.poses.Count) {
                     showingList = false;
-                    vfx.SetFloat("alpha", 0f);
+                    material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 0f);
                 }
             }
         }
@@ -40,11 +39,16 @@ namespace PoseTeacher {
         public void showGoal(PoseData pose, float alpha) {
             avatarContainer.MovePerson(pose);
             showingList = false;
-            vfx.SetFloat("alpha", alpha);
+            material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", alpha);
         }
 
         public void showNothing() {
-            vfx.SetFloat("alpha", 0f);
+            material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 0f);
+            showingList = false;
+        }
+
+        private void OnApplicationQuit() {
+            material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 1f);
             showingList = false;
         }
 
