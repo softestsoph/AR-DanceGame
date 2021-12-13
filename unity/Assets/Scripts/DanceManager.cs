@@ -18,9 +18,10 @@ namespace PoseTeacher
         public GameObject videoCube;
         public DancePerformanceScriptableObject DancePerformanceObject;
 
-        public GameObject avatarContainerSelf, avatarContainerTeacher;
-        List<AvatarContainer> avatarListSelf, avatarListTeacher;
+        //public GameObject avatarContainerSelf, avatarContainerTeacher;
+        //List<AvatarContainer> avatarListSelf, avatarListTeacher;
         public List<AvatarDisplay> teacherDisplays;
+        public AvatarDisplay defaultTeacher;
 
         private readonly string fake_file = "jsondata/2020_05_27-00_01_59.txt";
         public InputSource selfPoseInputSource = InputSource.KINECT;
@@ -70,7 +71,7 @@ namespace PoseTeacher
         public void Update()
         {
             currentSelfPose = selfPoseInputGetter.GetNextPose();
-            AnimateSelf(currentSelfPose);
+           // AnimateSelf(currentSelfPose);
             if (!finished)
             {
                 float timeOffset = audioSource.time - danceData.poses[currentId].timestamp;
@@ -95,21 +96,22 @@ namespace PoseTeacher
             
         }
 
-        void AnimateSelf(PoseData live_data)
+        /*void AnimateSelf(PoseData live_data)
         {
             // MovePerson() considers which container to move
             foreach (AvatarContainer avatar in avatarListSelf)
             {
                 avatar.MovePerson(live_data);
             }
-        }
+        }*/
+
         // Animates all teacher avatars based on the JointData provided
         void AnimateTeacher(PoseData recorded_data)
         {
-            foreach (AvatarContainer avatar in avatarListTeacher)
+            /*foreach (AvatarContainer avatar in avatarListTeacher)
             {
                 avatar.MovePerson(recorded_data);
-            }
+            }*/
             foreach (AvatarDisplay avatar in teacherDisplays)
             {
                 avatar.SetPose(recorded_data);
@@ -150,20 +152,37 @@ namespace PoseTeacher
             {
                 DancePerformanceObject = PersistentData.Instance.performance;
             }
+            /*
             avatarListSelf = new List<AvatarContainer>();
             avatarListTeacher = new List<AvatarContainer>();
             avatarListSelf.Add(new AvatarContainer(avatarContainerSelf));
             avatarListTeacher.Add(new AvatarContainer(avatarContainerTeacher));
+            */
 
             if (PersistentData.Instance.calibrated)
-            {
+            {   
+                foreach(Vector3 position in PersistentData.Instance.teacherPositions)
+                {
+                    GameObject newTeacher = Instantiate((GameObject) Resources.Load("Displays/HoloAvatarDisplay"));
+                    newTeacher.transform.position = position;
+                    newTeacher.transform.LookAt(PersistentData.Instance.playerPosition);
+                    newTeacher.transform.Rotate(new Vector3(-newTeacher.transform.rotation.eulerAngles.x, 180, -newTeacher.transform.rotation.eulerAngles.z));
+                    teacherDisplays.Add(newTeacher.GetComponent<AvatarDisplay>());
+                }
+
+                /*
                 avatarContainerTeacher.transform.position = PersistentData.Instance.teacherPositions[0];
                 avatarContainerTeacher.transform.LookAt(PersistentData.Instance.playerPosition);
                 avatarContainerTeacher.transform.Rotate(new Vector3(-avatarContainerTeacher.transform.rotation.eulerAngles.x, 180, -avatarContainerTeacher.transform.rotation.eulerAngles.z));
+                */
 
                 videoCube.transform.position = PersistentData.Instance.kinectPosition + Vector3.up;
                 videoCube.transform.LookAt(PersistentData.Instance.playerPosition);
                 videoCube.transform.Rotate(new Vector3(-videoCube.transform.rotation.eulerAngles.x, 180, -videoCube.transform.rotation.eulerAngles.z));
+            } 
+            else
+            {
+                teacherDisplays.Add(defaultTeacher);
             }
 
             audioSource = GetComponent<AudioSource>();
