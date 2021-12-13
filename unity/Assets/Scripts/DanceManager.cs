@@ -20,6 +20,7 @@ namespace PoseTeacher
 
         public GameObject avatarContainerSelf, avatarContainerTeacher;
         List<AvatarContainer> avatarListSelf, avatarListTeacher;
+        public List<AvatarDisplay> teacherDisplays;
 
         private readonly string fake_file = "jsondata/2020_05_27-00_01_59.txt";
         public InputSource selfPoseInputSource = InputSource.KINECT;
@@ -109,6 +110,10 @@ namespace PoseTeacher
             {
                 avatar.MovePerson(recorded_data);
             }
+            foreach (AvatarDisplay avatar in teacherDisplays)
+            {
+                avatar.SetPose(recorded_data);
+            }
         }
 
         PoseGetter getPoseGetter(InputSource src) {
@@ -141,7 +146,7 @@ namespace PoseTeacher
 
         void Setup()
         {
-            if (PersistentData.Instance != null)
+            if (PersistentData.Instance.performance != null)
             {
                 DancePerformanceObject = PersistentData.Instance.performance;
             }
