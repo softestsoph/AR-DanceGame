@@ -56,10 +56,61 @@ public class DanceDataScriptableObject : ScriptableObject {
         AssetDatabase.SaveAssets();
         Debug.Log("Saved Dance to " + "Assets/Dances/" + name + ".asset");
     }
+
+    public static DanceDataScriptableObject DanceDataToScriptableObject(DanceData danceData, string name, bool compressed)
+    {
+        DanceDataScriptableObject danceDataScriptableObject = DanceDataScriptableObject.CreateInstance<DanceDataScriptableObject>();
+        if (compressed)
+        {
+            byte[] byteDanceData = null;
+
+            // Convert DanceData to serializable cheapDancedata
+            cheapDanceData cheapDanceData = new cheapDanceData();
+            cheapDanceData.cheapPoses = new List<cheapDancePose>();
+            foreach (var pose in danceData.poses)
+            {
+                cheapDancePose cheapDancePose = new cheapDancePose();
+                cheapDancePose.positions = new float[(int)JointId.Count * 3];
+                cheapDancePose.orientations = new float[(int)JointId.Count * 4];
+                cheapDancePose.timestamp = pose.timestamp;
+
+                for (int i = 0; i < (int)JointId.Count; i++)
+                {
+                    Vector3 currPos = pose.positions[i];
+                    Quaternion currQuat = pose.orientations[i];
+                    cheapDancePose.positions[i * 3 + 0] = currPos.x;
+                    cheapDancePose.positions[i * 3 + 1] = currPos.y;
+                    cheapDancePose.positions[i * 3 + 2] = currPos.z;
+                    cheapDancePose.orientations[i * 4 + 0] = currQuat.x;
+                    cheapDancePose.orientations[i * 4 + 1] = currQuat.y;
+                    cheapDancePose.orientations[i * 4 + 2] = currQuat.z;
+                    cheapDancePose.orientations[i * 4 + 3] = currQuat.w;
+                }
+                cheapDanceData.cheapPoses.Add(cheapDancePose);
+            }
+
+            using (System.IO.MemoryStream ms = new MemoryStream())
+            {
+                var bf = new BinaryFormatter();
+                bf.Serialize(ms, cheapDanceData);
+                byteDanceData = ms.ToArray();
+            }
+            danceDataScriptableObject.DanceDataCompressed = CLZF2.Compress(byteDanceData);
+        }
+        else
+        {
+            danceDataScriptableObject.DanceDataUncompressed = danceData;
+        }
+
+        return danceDataScriptableObject;
+    }
+
 #endif
 
     public DanceData LoadDanceDataFromScriptableObject() {
+        Debug.Log("Loading DanceData.");
         if (DanceDataCompressed != null && DanceDataCompressed.Length > 0) {
+            Debug.Log("Decompressing...");
             cheapDanceData cheapDanceData;
             byte[] byteDanceData = CLZF2.Decompress(DanceDataCompressed);
             using (MemoryStream ms = new MemoryStream(byteDanceData)) {
@@ -79,9 +130,10 @@ public class DanceDataScriptableObject : ScriptableObject {
                 }
                 danceData.poses.Add(dancePose);
             }
-
+            Debug.Log(string.Format("Number of poses in decompressed data: {0}", danceData.poses.Count));
             return danceData;
         } else {
+            Debug.Log("Loading uncompressed.");
             return DanceDataUncompressed;
         }
     }

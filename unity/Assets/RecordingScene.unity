@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4148,15 +4148,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1630789622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0f029b1a1bcbe74a80524d7900c5601, type: 3}
+  m_Script: {fileID: 11500000, guid: cf7fdff7a90d7d34b863a21e1fd6b012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   videoCube: {fileID: 2047070474}
   DancePerformanceObject: {fileID: 11400000, guid: afd4663ee36f15d42a184272b5fab60c,
     type: 2}
+  withTeacher: 0
   avatarContainerSelf: {fileID: 684655731679157752}
   avatarContainerTeacher: {fileID: 168800787}
-  selfPoseInputSource: 1
+  selfPoseInputSource: 0
   paused: 0
   recording: 0
   recordButton: {fileID: 1455984990}
@@ -5578,7 +5579,7 @@ PrefabInstance:
     - target: {fileID: 9212582092468432197, guid: b2687ed6193f98e4193a51d525fbbaf5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.755
+      value: -7.24
       objectReference: {fileID: 0}
     - target: {fileID: 9212582092468432197, guid: b2687ed6193f98e4193a51d525fbbaf5,
         type: 3}

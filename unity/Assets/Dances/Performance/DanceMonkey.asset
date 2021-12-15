@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8aaa8c9ada8d9408776eb449a331ba, type: 3}
+  m_Name: DanceMonkey
+  m_EditorClassIdentifier: 
+  songTitle: DanceMonkey
+  songId: 13
+  danceData: {fileID: 11400000, guid: 2ae8c5c7ad8533b4e9facf8f752543bb, type: 2}
+  dynamicGoals: 1
+  goalStartTimestamps:
+  - 1.4031194
+  - 3.6896844
+  - 5.456582
+  - 6.859708
+  - 9.406121
+  - 14.550916
+  - 19.799644
+  - 25.048374
+  - 30.868748
+  - 35.130093
+  - 39.703243
+  - 44.068523
+  - 48.849545
+  - 52.90302
+  - 56.748623
+  - 58.09978
+  - 62.153255
+  - 65.99871
+  - 69.27243
+  explicitGoals: []
+  goalDuration:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 3.1700106
+  - 3.37788
+  - 3.637717
+  - 3.5857496
+  - 3.9495213
+  - 4.209359
+  - 4.0534563
+  - 4.6251
+  - 3.2739453
+  - 2.7023041
+  - 1.0393478
+  - 3.4298475
+  - 2.9101737
+  - 2.4944346
+  - 0
+  SongObject: {fileID: 11400000, guid: 53e95ec5c5e09b84eaca99368aade07d, type: 2}
+  Difficulty: 1

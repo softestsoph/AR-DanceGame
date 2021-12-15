@@ -124,12 +124,24 @@ MonoBehaviour:
     - {fileID: 0}
   OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   Events:
   - Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 102900000, guid: 5286315a03942d4429cfadafd9c972a6, type: 3}
+        - m_Target: {fileID: 102900000, guid: 945114270cfd4db44b72b2266e144b61, type: 3}
           m_TargetAssemblyTypeName: 
           m_MethodName: 
           m_Mode: 1

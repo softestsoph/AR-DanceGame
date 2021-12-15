@@ -17,7 +17,7 @@ public class DancePerformanceScriptableObject : ScriptableObject {
     [Tooltip("Leave empty if dynamicGoals is true")]
     [SerializeField] List<DanceDataScriptableObject> explicitGoals;
     [Tooltip("Leave empty if dynamicGoals is false")]
-    [SerializeField] List<float> goalDuration;
+    [SerializeField] public List<float> goalDuration;
     public MusicDataScriptableObject SongObject;
     public DanceDifficulty Difficulty;
 

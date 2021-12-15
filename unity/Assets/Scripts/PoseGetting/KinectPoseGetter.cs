@@ -99,11 +99,14 @@ namespace PoseTeacher
 
                         // Apply pose to user avatar(s)
                         PoseData live_data = PoseDataUtils.Body2PoseData(body);
+                        DancePose live_dance = DancePose.Body2DancePose(body, GetTimeStamp());
+
 
                         if (Recording) // recording
                         {
                             PoseDataJSON jdl = PoseDataUtils.Body2PoseDataJSON(body);
                             AppendRecordedFrame(jdl);
+                            recordedDanceData.poses.Add(live_dance);
                         }
                         CurrentPose = live_data;
 
