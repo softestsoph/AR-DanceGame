@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8aaa8c9ada8d9408776eb449a331ba, type: 3}
+  m_Name: Impossible
+  m_EditorClassIdentifier: 
+  songTitle: Impossible
+  songId: 2021-12-15-23-12-55
+  danceData: {fileID: 11400000, guid: 87ec8904bbc1f1c468792a6e509f704e, type: 2}
+  dynamicGoals: 1
+  goalStartTimestamps:
+  - 1.0192655
+  - 1.5628742
+  - 10.124718
+  - 19.977642
+  - 25.413738
+  - 28.199738
+  - 35.60642
+  - 36.421833
+  - 43.964417
+  - 54.225048
+  - 61.15607
+  - 68.4266
+  - 77.19181
+  - 83.64681
+  - 90.91718
+  explicitGoals: []
+  goalDuration:
+  - 0
+  - 7.338719
+  - 8.493889
+  - 5.1642804
+  - 2.3103356
+  - 4.756573
+  - 0
+  - 7.066914
+  - 9.445206
+  - 6.1835485
+  - 6.2514997
+  - 6.387402
+  - 5.9117436
+  - 5.5719876
+  - 1.9026296
+  SongObject: {fileID: 11400000, guid: a65dbcf1ace95744192d13c80c5d4471, type: 2}
+  Difficulty: 1
