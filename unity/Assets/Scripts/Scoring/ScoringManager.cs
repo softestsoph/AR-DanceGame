@@ -243,7 +243,8 @@ namespace PoseTeacher
 
             if (scoreDisplay != null)
             {
-                scoreDisplay.SendMessage("addScore", scores[scores.Count - 1]);
+                scoreDisplay.SendMessage("showScore", scores[scores.Count - 1]);
+                scoreDisplay.SendMessage("addScore", Mathf.RoundToInt((1-tempScore) * 1000));
             }
             currentlyScoring = false;
         }
