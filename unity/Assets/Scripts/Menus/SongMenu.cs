@@ -28,12 +28,15 @@ public class SongMenu : MonoBehaviour
             selectedID = songID;
             SongName.text = dance.songTitle;
             HighScore.text = HighScoreData.Instance.GetHighScore(songID).ToString();
+            gameObject.GetComponent<AudioSource>().clip = dance.SongObject.SongClip;
+            gameObject.GetComponent<AudioSource>().Play();
         }
        
     }
 
     public void cancelSelection()
     {
+        gameObject.GetComponent<AudioSource>().Stop();
         SongDisplay.SetActive(false);
         selectedID = null;
     }

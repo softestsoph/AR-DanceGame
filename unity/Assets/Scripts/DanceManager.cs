@@ -38,7 +38,7 @@ namespace PoseTeacher
 
         public float songTime => audioSource?.time ?? 0;
 
-        bool finished = false;
+        bool finished = true;
         int currentId = 0;
 
         public void Awake()
@@ -64,7 +64,7 @@ namespace PoseTeacher
         public void Start()
         {
             Setup();
-            RestartSong();
+            //RestartSong();
         }
 
         // Update is called once per frame

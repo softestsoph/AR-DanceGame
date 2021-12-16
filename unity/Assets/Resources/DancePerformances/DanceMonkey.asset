@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DanceMonkey
   m_EditorClassIdentifier: 
   songTitle: DanceMonkey
-  songId: 13
+  songId: DanceMonkey
   danceData: {fileID: 11400000, guid: 2ae8c5c7ad8533b4e9facf8f752543bb, type: 2}
   dynamicGoals: 1
   goalStartTimestamps:
