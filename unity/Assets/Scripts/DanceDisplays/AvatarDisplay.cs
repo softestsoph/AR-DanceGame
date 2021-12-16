@@ -6,14 +6,13 @@ namespace PoseTeacher {
     public class AvatarDisplay : MonoBehaviour, IAvatarDisplay {
         public AvatarType avatarType = AvatarType.ROBOT;
         public Material material;
-        private AvatarContainer avatarContainer;
+        private RobotTeacher robotTeacher;
 
         private bool fadeOut = false;
         private float alpha = 1f;
 
         private void Awake() {
-            avatarContainer = new AvatarContainer(gameObject);
-            avatarContainer.ChangeActiveType(avatarType);
+            robotTeacher = gameObject.GetComponent<RobotTeacher>();
             material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 1f);
         }
 
@@ -33,7 +32,7 @@ namespace PoseTeacher {
 
         public void SetPose(PoseData pose) {
             material.SetFloat("Vector1_f3692b551e1149e99f89c979f8f7364e", 1f);
-            avatarContainer.MovePerson(pose);
+            robotTeacher.MovePerson(pose);
         }
 
         public void FadeOut() {

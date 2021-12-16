@@ -95,7 +95,7 @@ namespace PoseTeacher
             if (audioSource.time > danceData.poses[danceData.poses.Count - 1].timestamp)
             {
                 audioSource.Stop();
-                List<Scores> finalScores = ScoringManager.Instance.getFinalScores();
+                List<Scores> finalScores = ScoringManager.Instance.getFinalScores().Item2;
                 Debug.Log(finalScores);
                 //TODO: Add final score screen
             }
