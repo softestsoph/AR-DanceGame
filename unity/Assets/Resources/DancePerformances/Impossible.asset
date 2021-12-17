@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Impossible
   m_EditorClassIdentifier: 
   songTitle: Impossible
-  songId: 2021-12-15-23-12-55
+  songId: Impossible
   danceData: {fileID: 11400000, guid: 87ec8904bbc1f1c468792a6e509f704e, type: 2}
   dynamicGoals: 1
   goalStartTimestamps:

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DanceMonkey-songData
   m_EditorClassIdentifier: 
   SongName: DanceMonkey
-  SongClip: {fileID: 8300000, guid: 4541e84c4a8f63a46b90cff79e02439c, type: 3}
+  SongClip: {fileID: 8300000, guid: 410e55017cbfb60429127135a1697e9b, type: 3}
   Volume: 1
   Attribution: artist
