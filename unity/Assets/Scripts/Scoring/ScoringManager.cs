@@ -202,10 +202,11 @@ namespace PoseTeacher
             else
             {
                 //for a move, take square average of scores
-                tempScore = ScoringUtils.squaredAverage(currentScores);
+                tempScore = 0.7f * ScoringUtils.squaredAverage(currentScores) + 0.3f * DTWDistance(currentGoal, currentMotion, 3, 10);
+                Debug.Log("DTW: " + DTWDistance(currentGoal, currentMotion, 3, 10));
+
             }
             Debug.Log(tempScore);
-            Debug.Log("DTW: " + DTWDistance(currentGoal, currentMotion, 3, 10));
 
             totalScore += 1 - tempScore;
 
