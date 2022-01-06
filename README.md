@@ -1,4 +1,7 @@
 # AR Dance Game
+## Explanation of Separate Submission
+This repository is a copy of the [original repository](https://github.com/softestsoph/motion-instructor) that was being worked on with the whole group, with some additional work done as final polishing. The decision to split from the group was made after the other team members repeatedly did not deliver the work they promised, with the first half of the semester being almost exclusively worked on by myself, and some of them stating after the project presentation that they would no longer work on the project. The report has a section on the distribution of tasks, but you can also see the pull request history on the old repository to confirm my statements.
+
 ## Environment
 As of December, 2021, this repository has been tested under the following environment:
 - Windows 10 Education (10.0.19042 Build 19042)
@@ -67,6 +70,15 @@ Use the UI to navigate in the application. This can also be done in the editor, 
 [MRTK In-Editor Input Simulation](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html)
 page to see how.
 
+## Demo Video Explanation
+Two demo videos can be found here: [Demo Videos](https://drive.google.com/drive/folders/1dV66g14-gO3e55sY8MSQsrKDcKEhm505?usp=sharing)
+Unfortunately, due to not having access to the devices, I cannot provide a demo video of an entire walkthrough of the application. These were recorded by a teammate, but they did not deliver on the requested video. I will explain here what can be seen in the demo videos and what is missing from them.
+#### SceneSetup
+The first video shows how the scene can be set up. The player takes the three cubes, red for teacher, green for kinect and blue for player, and places them where they should be in the room. The assignment is explained in the hand menu, where there is also an option to add more teacher avatars. Unfortunately this feature is not showcased in the video. What would happen is an additional red cube would spawn at the players hand, and they could then place it. They can also remove teachers, with the latest added being the first removed, and one teacher being required. Once calibration is done, the player can confirm in the hand menu and return to the main menu.
+#### Dance Scene
+Unfortunately, the scene setup in this video does not correspond to the one in the previous video. The dance scene consists of the teacher avatar, the score display and the video cube. With a correct scene setup, the video cube and score display show up overtop the kinect camera. In this video however they were not placed correctly, so they are harder to see and not in the field of view a lot of the time. Nevertheless, you can still see the teacher avatar showing the dance and the score being displayed. At the end of the dance, the final score is displayed in an end screen.
+#### Things missing from the videos
+Apart from the things already mentioned like correct scene setup and the multiple teacher support, the main dance game is shown almost from start to finish through these two videos. What is not shown are the tools, those being the recording scene and the editor for dances. The recording scene works similar to the dance scene, but it only has a video cube and an avatar reflecting the users movement. The editor was not functional when I split from the group so I cannot say what it looks like.
 
 ## License
 
